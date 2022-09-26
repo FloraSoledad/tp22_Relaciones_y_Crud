@@ -85,8 +85,27 @@ const moviesController = {
             })
         .catch(error => console.log(error)) 
     },
+    /* ACTUALIZAR */
     update: function (req, res) {
-        return res.send(req.body)
+        const { title, rating, awards, length, release_date, genre_id} = req.body;
+        Movies.update(
+            {/* el primer objeto me indica que columna tengo actualizada */
+                title: title.trim(),
+                rating,
+                awards,
+                length,
+                release_date,
+                genre_id
+            },
+            {
+                where: {
+                    id : req.params.id
+                }
+            }
+        )
+            .then(() => res.redirect('/movies/detail/' + req.params.id))
+            .catch(error => console.log (error))
+        
     },
     delete: function (req,res) {},
     destroy: function (req,res) {},
