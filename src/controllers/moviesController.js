@@ -22,8 +22,7 @@ const moviesController = {
             include : ['genre']
         })
             .then(movie => {
-            return res.send(movie)
-            return res.render('moviesDetail.ejs', {movie});
+            return res.render("moviesDetail.ejs", {movie});
             })
         .catch(error => console.log(error))
     },
