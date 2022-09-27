@@ -19,7 +19,7 @@ const moviesController = {
     },
     detail: (req, res) => {
         db.Movie.findByPk(req.params.id, {
-            include : ['genre']
+            include : ['genre', 'actors']
         })
             .then(movie => {
             return res.render("moviesDetail.ejs", {movie});
