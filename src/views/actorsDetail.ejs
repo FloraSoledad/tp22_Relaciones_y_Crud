@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= genre.name %> </title>
+    <title><%= actor.last_name %>, <%= actor.first_name %></title>
     <link rel='stylesheet' href='/css/style.css' />
 
 </head>
@@ -11,19 +11,18 @@
     <figure>
         <img src="/img/logo-DH.png" alt="Logo Digital House">
     </figure>    
-    <h1><%= genre.name %> </h1>
+    <h1><%= actor.last_name %>, <%= actor.first_name %></h1>
     <br>
-    <p>NAME: <%= genre.name %> </p>
-    <p>RANKIG: <%= genre.ranking %> </p>
-    <% if (genre.movies.length) { %>
+    <h2>Peliculas</h2>
+    <% if (actor.movies.length) { %>
     <ul>
-        <% genre.movies.forEach(movie => { %>
+        <% actor.movies.forEach(movie => { %>
             <li><a href="/movies/detail/<%= movie.id %>"><%= movie.title %></a></li>
            <% }) %>
-    </ul>
+    </ul> 
 
     <% }else{ %>
-    <p>El genero no tiene peliculas</p>
+    <p>El actor no tiene peliculas</p>
     <% } %> 
 
 </body>

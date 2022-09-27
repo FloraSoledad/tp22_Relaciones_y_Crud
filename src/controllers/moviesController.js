@@ -14,19 +14,23 @@ const moviesController = {
     list: (req, res) => {
         db.Movie.findAll()
             .then(movies => {
-                res.render('moviesList.ejs', {movies})
-            })
+                res.render('moviesList.ejs', { movies })
+            });
     },
     detail: (req, res) => {
-        db.Movie.findByPk(req.params.id)
+        db.Movie.findByPk(req.params.id, {
+            include : ['genre']
+        })
             .then(movie => {
-                res.render('moviesDetail.ejs', {movie});
-            });
+            return res.send(movie)
+            return res.render('moviesDetail.ejs', {movie});
+            })
+        .catch(error => console.log(error))
     },
     new: (req, res) => {
         db.Movie.findAll({
             order : [['release_date', 'DESC']],
-            limit: 5
+            limit: 5,
         })
             .then(movies => {
                 res.render('newestMovies', {movies});
@@ -68,7 +72,13 @@ const moviesController = {
         }).catch(error => console.log(error))
     },
     edit: function (req, res) {
-        let Movie = Movies.findByPk(req.params.id)
+        let Movie = Movies.findByPk(req.params.id, {
+            include: [
+                {
+                    association : 'genre' 
+                }
+            ]
+        })
         let allGenres = Genres.findAll({
             order: ['name']
         });
@@ -76,7 +86,7 @@ const moviesController = {
             .then(([Movie,allGenres])=>{
             /*     console.log(Movie)
                 console.log(allGenres) */
-                console.log(moment(Movie.release_date).format('YYYY-MM-DD'))
+                return res.send(Movie) 
                 return res.render('moviesEdit',{
                     Movie,
                     allGenres,
@@ -107,8 +117,23 @@ const moviesController = {
             .catch(error => console.log (error))
         
     },
-    delete: function (req,res) {},
-    destroy: function (req,res) {},
+    delete: function (req, res) {
+        const Movie = req.query
+        res.render('moviesDelete', {Movie})
+        
+    },
+    destroy: function (req, res) {
+        const { id } = req.params
+        Movies.destroy({
+            where: {
+                id
+            }
+        })
+            .then(() => {
+                return res.redirect('/movies')
+         })
+         .catch(error => console.log(error)) 
+    },
 };
 
 module.exports = moviesController;

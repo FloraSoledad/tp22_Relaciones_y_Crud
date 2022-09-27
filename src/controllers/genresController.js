@@ -10,12 +10,18 @@ const genresController = {
             })
     },
     'detail': (req, res) => {
-        db.Genre.findByPk(req.params.id)
+        db.Genre.findByPk(req.params.id, {
+            include: [
+                {
+                    association : 'movies'
+                }
+            ]
+        })
             .then(genre => {
+                /* return res.send(genre) */ /* <= me devuelde la estructura y me trae el array */
                 res.render('genresDetail.ejs', {genre});
             });
     }
-
 }
 
 module.exports = genresController;
