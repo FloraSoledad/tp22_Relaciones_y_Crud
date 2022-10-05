@@ -85,7 +85,7 @@ const moviesController = {
             .then(([Movie,allGenres])=>{
             /*     console.log(Movie)
                 console.log(allGenres) */
-                return res.send(Movie) 
+                /* return res.send(Movie)  */ /* se muestra en json */
                 return res.render('moviesEdit',{
                     Movie,
                     allGenres,
